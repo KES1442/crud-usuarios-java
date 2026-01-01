@@ -44,8 +44,12 @@ public class CadastrarUser {
                     metodos.delete(users);
                     break;
 
+                case 0:
+                    break;
+                    
                 default:
                     System.out.println("Opção inválida!");
+                    break;
             }
         }while( option != 0);
     scanner.close();
