@@ -4,26 +4,41 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
-import Test.CadastrarUser;
+
 import User.User;
 
 public class MetodosCadastro {
     //criar usuarios, listar usuarios, atualizar usuario, e deletar usuario.
+
+    //POSSIVEIS MELHORIAS: validação de entrada (impedir email duplicado, nome e/ou email nao podem ficar vazios) | Busca de usuario -> nao só por id mas tambem por nome ou email | ordenação -> Colocar os usuarios em ordem alfabetica.
+    //POSSIVEIS NOVAS FUNCIONALIDADES: Gerar ID's automaticos mais seguros | salvar/ler arquivo (persistencia) 
+    //POSSIVEIS ATUALIZAÇÕES DE PROJETO FUTUROS: Passar para SpringBoot e tornar uma API REST e banco de dados (Postgres ou mysql) 
+
+    
     ArrayList<User> users;
     Scanner scanner = new Scanner(System.in);
     static int idnext = 1;
     
     public void create(ArrayList<User> users){
+        
+        
         System.out.println("Digite o nome do usuario: ");
         String name = scanner.nextLine();
         System.out.println("Digite o email: ");
         String email = scanner.nextLine();
 
+        //Impedir email duplicado
+        
+        for (User user : users){
+            if(email.equals(user.getEmail())){
+                System.out.println("Nao é possivel criar usuario, email ja existente!");
+                return;
+            }
+         }
+        
         User user = new User(idnext++, name, email);
         users.add(user);
-
         System.out.println("Usuario criado com sucesso!");
-        
     }
 
     public void list(ArrayList<User> users){
@@ -52,8 +67,20 @@ public class MetodosCadastro {
                 u.setNome(newname);
                 System.out.println("Digite o novo email: ");
                 String newemail = scanner.nextLine();
-                u.setEmail(newemail);
-                System.out.println("Atualizado com sucesso!");
+                
+                //impedir email duplicado 
+
+                for (User user : users){
+                    if(newemail.equals(user.getEmail()) && user.getId() != u.getId()){
+                        System.out.println("Nao é possivel atualizar usuario, email ja existente!");
+                        return;
+                }
+            }
+
+
+            u.setEmail(newemail);
+            System.out.println("Atualizado com sucesso!");
+            atualizado = true;
                 
             }
         }
