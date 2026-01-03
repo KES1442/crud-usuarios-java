@@ -10,7 +10,7 @@ import User.User;
 public class MetodosCadastro {
     //criar usuarios, listar usuarios, atualizar usuario, e deletar usuario.
 
-    //POSSIVEIS MELHORIAS: validação de entrada (impedir email duplicado, nome e/ou email nao podem ficar vazios) | Busca de usuario -> nao só por id mas tambem por nome ou email | ordenação -> Colocar os usuarios em ordem alfabetica.
+    //POSSIVEIS MELHORIAS: validação de entrada (impedir email duplicado ("Feito"), nome e/ou email nao podem ficar vazios) | Busca de usuario -> nao só por id mas tambem por nome ou email | ordenação -> Colocar os usuarios em ordem alfabetica.
     //POSSIVEIS NOVAS FUNCIONALIDADES: Gerar ID's automaticos mais seguros | salvar/ler arquivo (persistencia) 
     //POSSIVEIS ATUALIZAÇÕES DE PROJETO FUTUROS: Passar para SpringBoot e tornar uma API REST e banco de dados (Postgres ou mysql) 
 
@@ -24,9 +24,24 @@ public class MetodosCadastro {
         
         System.out.println("Digite o nome do usuario: ");
         String name = scanner.nextLine();
+        
+        //Impedir campo nome vazio
+
+        if(name.isBlank()){
+            System.out.println("Usuario Inválido, o campo nao pode estar vazio!");
+            return;
+        }
+
         System.out.println("Digite o email: ");
         String email = scanner.nextLine();
 
+        //Impedir campo email vazio
+
+        if(email.isBlank()){
+            System.out.println("Email Inválido, o campo nao pode estar vazio!");
+            return;
+        }
+        
         //Impedir email duplicado
         
         for (User user : users){
@@ -64,20 +79,34 @@ public class MetodosCadastro {
             if (u.getId() == id) {
                 System.out.println("Digite o novo nome de usuario: ");
                 String newname = scanner.nextLine();
-                u.setNome(newname);
+                
+                //Impedir campo nome vazio
+                
+                if(newname.isBlank()){
+                    System.out.println("Usuario inválido, o campo nao pode estar vazio!");
+                    return;
+                }
+
                 System.out.println("Digite o novo email: ");
                 String newemail = scanner.nextLine();
                 
+                //Impedir campo email vazio
+                
+                if(newemail.isBlank()){
+                    System.out.println("Email inválido, o campo nao pode estar vazio!");
+                    return;
+                }
+
                 //impedir email duplicado 
 
                 for (User user : users){
                     if(newemail.equals(user.getEmail()) && user.getId() != u.getId()){
                         System.out.println("Nao é possivel atualizar usuario, email ja existente!");
                         return;
+                    }
                 }
-            }
 
-
+            u.setNome(newname);
             u.setEmail(newemail);
             System.out.println("Atualizado com sucesso!");
             atualizado = true;
@@ -114,7 +143,7 @@ public class MetodosCadastro {
             }
         }
         if (!removido){
-            System.out.println("Não é possivel deletar usuario!");
+            System.out.println("ID inválido, não é possivel deletar usuario!");
         }
         
        
